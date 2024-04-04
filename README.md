@@ -1,3 +1,7 @@
+#Collab_Earth
+This a tool to visualize conservation data and enable collaboration with real-time collaborative notes. This will initially have Elephant conservation data. May include other species later on.
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

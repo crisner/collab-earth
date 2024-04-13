@@ -23,10 +23,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import * as Yup from 'yup';
 import styles from "./page.module.css";
 
 export default function SignUp() {
   const router = useRouter();
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters long')
+      .required('Password is required'),
+    role: Yup.string().required('Please select a role'),
+  });
+  const validate = (values:any) => {
+    const errors = {
+      email: '',
+      password: '',
+      role: ''
+    };
+  
+    if (!values.email) {
+      errors.email = 'Email is required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+      errors.email = 'Invalid email address';
+    }
+  
+    if (!values.password) {
+      errors.password = 'Please enter password';
+    } else if(values.password.length < 8) {
+      errors.password = 'Password should be atleast 8 characters long';
+    }
+
+    if (!values.role) {
+      errors.role = 'Please select a role';
+    }
+    return errors;
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -36,6 +68,7 @@ export default function SignUp() {
       // affiliation: "",
       // location: "",
     },
+    validationSchema,
     onSubmit: async (values) => {
       // Implement your signup logic here, sending data to your backend
       // This example just redirects after a simulated delay
@@ -43,9 +76,7 @@ export default function SignUp() {
       // await new Promise((resolve) => setTimeout(resolve, 1000));
       // router.push("/success"); // Redirect to success page after signup
     },
-    validate: values => {
-      console.log('values',values);
-    }
+    validate
   });
   return (
     <Card className="mx-auto max-w-2xl border-0 mt-10">
@@ -68,8 +99,13 @@ export default function SignUp() {
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 required
+                className={formik.touched.email && formik.errors.email ? 'border-destructive' : ''}
               />
+              {formik.touched.email && formik.errors.email ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.email}</div>
+        ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password:</Label>
@@ -79,8 +115,13 @@ export default function SignUp() {
                 name="password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 required
+                className={formik.touched.password && formik.errors.password ? 'border-destructive' : ''}
               />
+               {formik.touched.password && formik.errors.password ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.password}</div>
+        ) : null}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">Role:</Label>
@@ -91,9 +132,15 @@ export default function SignUp() {
                 onValueChange={(value) => {
                   formik.setFieldValue('role', value);
                 }}
+                onOpenChange={(value) => {
+                  if(!value) {
+                    formik.setFieldTouched('role', true);
+                  }
+                }}
                 required
+                
               >
-                <SelectTrigger>
+                <SelectTrigger  className={formik.touched.role && formik.errors.role ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
@@ -104,6 +151,9 @@ export default function SignUp() {
                   ))}
                 </SelectContent>
               </Select>
+              {formik.touched.role && formik.errors.role ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.role}</div>
+        ) : null}
             </div>
             {/* <div className="grid gap-2">
               <Label htmlFor="name">Name (Optional):</Label>
@@ -113,6 +163,7 @@ export default function SignUp() {
                 name="name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
             </div>
             <div className="grid gap-2">
@@ -123,6 +174,7 @@ export default function SignUp() {
                 name="affiliation"
                 value={formik.values.affiliation}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
             </div>
             <div className="grid gap-2">
@@ -133,6 +185,7 @@ export default function SignUp() {
                 name="location"
                 value={formik.values.location}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
             </div> */}
             <Button type="submit" className="w-full mt-4">

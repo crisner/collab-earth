@@ -12,14 +12,38 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import * as Yup from 'yup';
 
 export default function SignIn() {
     const router = useRouter();
+    const validationSchema = Yup.object().shape({
+      email: Yup.string().email('Invalid email format').required('Email is required'),
+      password: Yup.string().required('Password is required'),
+    });
+    const validate = (values:any) => {
+      const errors = {
+        email: '',
+        password: '',
+      };
+    
+      if (!values.email) {
+        errors.email = 'Please enter your email';
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Please enter a valid email';
+      }
+    
+      if (!values.password) {
+        errors.password = 'Please enter your password';
+      }
+  
+      return errors;
+    };
     const formik = useFormik({
       initialValues: {
         email: "",
         password: "",
       },
+      validationSchema,
       onSubmit: async (values) => {
         // Implement your signup logic here, sending data to your backend
         // This example just redirects after a simulated delay
@@ -27,9 +51,7 @@ export default function SignIn() {
         // await new Promise((resolve) => setTimeout(resolve, 1000));
         // router.push("/success"); // Redirect to success page after signup
       },
-      validate: values => {
-        console.log('values',values);
-      }
+      validate
     });
     return (
       <Card className="mx-auto max-w-2xl border-0 mt-10">
@@ -49,8 +71,13 @@ export default function SignIn() {
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   required
+                  className={formik.touched.email && formik.errors.email ? 'border-destructive' : ''}
                 />
+                 {formik.touched.email && formik.errors.email ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.email}</div>
+        ) : null}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password:</Label>
@@ -60,8 +87,13 @@ export default function SignIn() {
                   name="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   required
+                className={formik.touched.password && formik.errors.password ? 'border-destructive' : ''}
                 />
+                {formik.touched.password && formik.errors.password ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.password}</div>
+        ) : null}
               </div>
               <Button type="submit" className="w-full mt-4">
                 Login

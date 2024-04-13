@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <Grid>
       <div
-        className={`${styles.footer} flex justify-center items-center gap-4 p-2 col-span-10 col-start-3 col-end-11`}
+        className={`${styles.footer} flex justify-center items-center gap-4 p-2 col-span-12`}
       >
         <TextSmall>
           Join the Conversation: Log in to Discuss Conservation Findings{" "}

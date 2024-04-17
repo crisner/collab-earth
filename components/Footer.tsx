@@ -3,11 +3,9 @@ import { Button } from "@/components/ui/button";
 import styles from "./Footer.module.css";
 import TextSmall from "./ui/Typography/TextSmall";
 import Grid from "./ui/Grid/Grid";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const Footer = () => {
-  const router = useRouter();
-  const redirectToLogin = () => router.push("/signin");
   return (
     <Grid>
       <div
@@ -16,7 +14,7 @@ const Footer = () => {
         <TextSmall>
           Join the Conversation: Log in to Discuss Conservation Findings{" "}
         </TextSmall>
-        <Button onClick={redirectToLogin} variant="outline">Log in</Button>
+        <Button onClick={() => signIn()} variant="outline">Log in</Button>
       </div>
     </Grid>
   );

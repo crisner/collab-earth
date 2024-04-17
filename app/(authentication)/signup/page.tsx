@@ -36,11 +36,7 @@ export default function SignUp() {
     role: Yup.string().required('Please select a role'),
   });
   const validate = (values:any) => {
-    const errors = {
-      email: '',
-      password: '',
-      role: ''
-    };
+    const errors = {} as any;
   
     if (!values.email) {
       errors.email = 'Email is required';

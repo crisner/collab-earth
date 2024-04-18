@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
 import { ROLES } from "@/constants/users";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,23 +16,20 @@ import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import * as Yup from 'yup';
-import styles from "./page.module.css";
+import { signIn } from "next-auth/react";
 
 export default function SignUp() {
-  const router = useRouter();
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters long')
       .required('Password is required'),
-    role: Yup.string().required('Please select a role'),
+      selectedRole: Yup.string().required('Please select a role'),
   });
   const validate = (values:any) => {
     const errors = {} as any;
@@ -50,8 +46,8 @@ export default function SignUp() {
       errors.password = 'Password should be atleast 8 characters long';
     }
 
-    if (!values.role) {
-      errors.role = 'Please select a role';
+    if (!values.selectedRole) {
+      errors.selectedRole = 'Please select a role';
     }
     return errors;
   };
@@ -59,18 +55,32 @@ export default function SignUp() {
     initialValues: {
       email: "",
       password: "",
-      role: "",
-      // name: "",
-      // affiliation: "",
-      // location: "",
+      selectedRole: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       // Implement your signup logic here, sending data to your backend
       // This example just redirects after a simulated delay
       console.log("Submitting signup form:", values);
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-      // router.push("/success"); // Redirect to success page after signup
+      try {
+        const res = await fetch('api/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(values)
+        })
+        console.log('sumbmitted values', res);
+        if(res.ok) {
+          console.log('Sign up successful')!
+          signIn();
+        } else {
+          const error = res;
+          console.error('Error signing up!', error);
+        }
+      } catch (error) {
+        console.error('Something went wrong!', error);
+      }
     },
     validate
   });
@@ -120,23 +130,22 @@ export default function SignUp() {
         ) : null}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="role">Role:</Label>
+              <Label htmlFor="selectedRole">Role:</Label>
               <Select
-                name="role"
-                defaultValue={formik.values.role}
-                value={formik.values.role}
+                name="selectedRole"
+                defaultValue={formik.values.selectedRole}
+                value={formik.values.selectedRole}
                 onValueChange={(value) => {
-                  formik.setFieldValue('role', value);
+                  formik.setFieldValue('selectedRole', value);
                 }}
                 onOpenChange={(value) => {
                   if(!value) {
-                    formik.setFieldTouched('role', true);
+                    formik.setFieldTouched('selectedRole', true);
                   }
                 }}
-                required
-                
+                required 
               >
-                <SelectTrigger  className={formik.touched.role && formik.errors.role ? 'border-destructive' : ''}>
+                <SelectTrigger  className={formik.touched.selectedRole && formik.errors.selectedRole ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
@@ -147,8 +156,8 @@ export default function SignUp() {
                   ))}
                 </SelectContent>
               </Select>
-              {formik.touched.role && formik.errors.role ? (
-          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.role}</div>
+              {formik.touched.selectedRole && formik.errors.selectedRole ? (
+          <div className="text-[0.8rem] font-medium text-destructive">{formik.errors.selectedRole}</div>
         ) : null}
             </div>
             {/* <div className="grid gap-2">

@@ -72,7 +72,8 @@ export default function SignUp() {
         })
         console.log('sumbmitted values', res);
         if(res.ok) {
-          console.log('Sign up successful')!
+          console.log('Sign up successful');
+          formik.resetForm();
           signIn();
         } else {
           const error = res;
@@ -193,11 +194,11 @@ export default function SignUp() {
                 onBlur={formik.handleBlur}
               />
             </div> */}
-            <Button type="submit" className="w-full mt-4">
+            <Button disabled={formik.isSubmitting} type="submit" className="w-full mt-4">
               Create an account
             </Button>
-            <Button variant="outline" className="w-full">
-              Sign up with GitHub
+            <Button disabled={formik.isSubmitting} variant="outline" className="w-full">
+              Sign up with Google
             </Button>
           </div>
         </form>

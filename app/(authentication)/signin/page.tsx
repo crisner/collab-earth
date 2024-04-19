@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as Yup from "yup";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email format")
@@ -39,13 +41,17 @@ export default function SignIn() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      // Implement your signup logic here, sending data to your backend
-      // This example just redirects after a simulated delay
-      console.log("Submitting signup form:", values);
-      // return;
-      signIn('credentials', {...values, redirect: true, callbackUrl: '/'});
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-      // router.push("/success"); // Redirect to success page after signup
+      const response = await signIn("credentials", {
+        ...values,
+        redirect: false,
+      });
+      if (response?.error) {
+        formik.setErrors({ email: response?.error, password: response?.error });
+      }
+      if (response?.ok) {
+        formik.resetForm();
+        router.push("/");
+      }
     },
     validate,
   });
@@ -73,7 +79,9 @@ export default function SignIn() {
                     : ""
                 }
               />
-              {formik.touched.email && formik.errors.email ? (
+              {formik.touched.email &&
+              formik.errors.email &&
+              formik.errors.email !== formik.errors.password ? (
                 <div className="text-[0.8rem] font-medium text-destructive">
                   {formik.errors.email}
                 </div>
@@ -101,7 +109,11 @@ export default function SignIn() {
                 </div>
               ) : null}
             </div>
-            <Button type="submit"  className="w-full mt-4">
+            <Button
+              type="submit"
+              disabled={formik.isSubmitting}
+              className="w-full mt-4"
+            >
               Login
             </Button>
           </div>
@@ -112,6 +124,7 @@ export default function SignIn() {
             signIn("google");
           }}
           className="w-full mt-4"
+          disabled={formik.isSubmitting}
         >
           Log in with Google
         </Button>

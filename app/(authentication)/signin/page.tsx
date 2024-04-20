@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import * as Yup from "yup";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function SignIn() {
   const router = useRouter();
@@ -126,7 +127,7 @@ export default function SignIn() {
           className="w-full mt-4"
           disabled={formik.isSubmitting}
         >
-          Log in with Google
+          <Image src='https://authjs.dev/img/providers/google.svg' alt='Google signin' width={18} height={18} className="mr-2" /> Signin with Google
         </Button>
         <div className="mt-4 text-center text-sm">
           Don't have an account?{" "}

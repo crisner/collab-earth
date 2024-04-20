@@ -70,5 +70,32 @@ export const options: NextAuthOptions = {
       }
       return session;
     },
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        await connectMongoDB();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const newUser = new User({
+              username: user.email?.split("@")[0],
+              email: user.email,
+              first_name: user?.given_name,
+              last_name: user?.family_name,
+              role: "user",
+              is_verified: user?.email_verified,
+              password: ' '
+            });
+
+            await newUser.save();
+            return true;
+          }
+          return true;
+        } catch (err) {
+          console.log("Error saving user", err);
+          return false;
+        }
+      }
+      return true;
+    },
   },
 };

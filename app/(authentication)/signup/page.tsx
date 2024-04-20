@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import * as Yup from 'yup';
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function SignUp() {
   const validationSchema = Yup.object().shape({
@@ -197,11 +198,11 @@ export default function SignUp() {
             <Button disabled={formik.isSubmitting} type="submit" className="w-full mt-4">
               Create an account
             </Button>
-            <Button disabled={formik.isSubmitting} variant="outline" className="w-full">
-              Sign up with Google
-            </Button>
           </div>
         </form>
+            <Button disabled={formik.isSubmitting} onClick={() => signIn('google')} variant="outline" className="w-full mt-4">
+             <Image src='https://authjs.dev/img/providers/google.svg' alt='Google signin' width={18} height={18} className="mr-2" /> Continue with Google
+            </Button>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
           <Link href="/signin" className="underline">

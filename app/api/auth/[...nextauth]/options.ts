@@ -95,7 +95,10 @@ export const options: NextAuthOptions = {
           return false;
         }
       }
-      return true;
+      if(account?.provider === 'credentials') {
+        return true;
+      }
+      return false;
     },
   },
 };

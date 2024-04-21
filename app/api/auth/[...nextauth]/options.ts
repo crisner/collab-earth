@@ -76,6 +76,8 @@ export const options: NextAuthOptions = {
         try {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
+            const saltRounds = 10;
+    const defaultHashedPassword = await bcrypt.hash('collab_earth_goole', saltRounds);
             const newUser = new User({
               username: user.email?.split("@")[0],
               email: user.email,
@@ -83,7 +85,7 @@ export const options: NextAuthOptions = {
               last_name: user?.family_name,
               role: "user",
               is_verified: user?.email_verified,
-              password: ' '
+              password: defaultHashedPassword
             });
 
             await newUser.save();

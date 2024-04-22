@@ -74,3 +74,17 @@
       @apply bg-background text-foreground;
     }
   }
+
+  .main {
+    min-height: 100vh;
+  }
+  
+  .mapContainer {
+    width: 100%;
+    height: calc(100dvh - 56px);
+    z-index: 40;
+  }
+
+  .logo {
+    height: 16px;
+}

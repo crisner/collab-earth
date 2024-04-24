@@ -88,3 +88,7 @@
   .logo {
     height: 16px;
 }
+
+.nav > button:last-child {
+  display: none;
+}

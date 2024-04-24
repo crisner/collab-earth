@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { AlignLeft, ChevronsLeft } from "lucide-react";
@@ -10,6 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Logo from "@/public/logo.svg";
+import { signOut } from "next-auth/react"
 import styles from "./Nav.module.css";
 
 const Nav = () => {
@@ -34,7 +37,7 @@ const Nav = () => {
             <Button variant="ghost" className="justify-start">
               Notes
             </Button>
-            <Button variant="ghost" className="justify-start">
+            <Button variant="ghost" onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })} className="justify-start">
               Signout
             </Button>
           </div>

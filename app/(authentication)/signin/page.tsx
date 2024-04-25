@@ -47,11 +47,18 @@ export default function SignIn() {
         redirect: false,
       });
       if (response?.error) {
-        formik.setErrors({ email: response?.error, password: response?.error });
+        let error = response?.error;
+        if (response?.status === 401) {
+          error = 'Please check your email and password';
+        }
+        if (response?.status === 500) {
+          error = 'Something went wrong! Please try again after some time.';
+        }
+        formik.setErrors({ email: error, password: error });
       }
       if (response?.ok) {
         formik.resetForm();
-        router.push("/");
+        router.push("/dashboard");
       }
     },
     validate,

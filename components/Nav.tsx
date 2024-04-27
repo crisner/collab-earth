@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { AlignLeft, ChevronsLeft } from "lucide-react";
@@ -7,15 +5,18 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Logo from "@/public/logo.svg";
-import { signOut } from "next-auth/react"
+import NavButtons from "./NavButtons";
+import { getServerSession } from "next-auth/next";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import styles from "./Nav.module.css";
 
-const Nav = () => {
+const Nav = async () => {
+  const session = await getServerSession(options);
   return (
     <div className="py-4 ml-4 ">
       <Sheet>
@@ -25,22 +26,15 @@ const Nav = () => {
           </Button>
         </SheetTrigger>
         <SheetContent className={`nav ${styles.nav}`} side="left">
-          <SheetHeader>
+          <SheetHeader className={styles.header}>
             <SheetTitle>
-              <Logo className="logo" />
+              {session?.user?.username}
             </SheetTitle>
+            {session?.user?.role && <SheetDescription>
+            {session?.user?.role}
+            </SheetDescription>}
           </SheetHeader>
-          <div className="grid gap-4 py-4">
-            <Button variant="ghost" className="justify-start">
-              Profile
-            </Button>
-            <Button variant="ghost" className="justify-start">
-              Notes
-            </Button>
-            <Button variant="ghost" onClick={() => signOut({ callbackUrl: 'http://localhost:3000/' })} className="justify-start">
-              Signout
-            </Button>
-          </div>
+          <NavButtons />
           <SheetClose className={styles.collapse} asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
               <ChevronsLeft />

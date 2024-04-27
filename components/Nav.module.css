@@ -1,10 +1,16 @@
 .nav {
     max-width: 250px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.header {
+    padding-left: 14px;
 }
 
 .collapse {
     position: absolute;
     z-index: 99999999999;
     left: 200px;
-    top: 12px;
+    top: 18px;
 }

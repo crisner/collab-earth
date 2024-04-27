@@ -21,10 +21,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import * as Yup from "yup";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default function SignUp() {
+  const { status } = useSession();
+
+  if (status === "authenticated") {
+    redirect("/dashboard");
+  }
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
@@ -94,7 +100,7 @@ export default function SignUp() {
     },
     validate,
   });
-  return (
+  return status === "unauthenticated"  && (
     <Card className="mx-auto max-w-2xl border-0 mt-10">
       <CardHeader className="mb-10">
         <CardTitle className="text-xl text-center">

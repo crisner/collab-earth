@@ -7,11 +7,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as Yup from "yup";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, redirect } from "next/navigation";
 import Image from "next/image";
 
 export default function SignIn() {
+  const { status } = useSession();
+
+  if (status === "authenticated") {
+    redirect("/dashboard");
+  };
+
   const router = useRouter();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -63,7 +69,7 @@ export default function SignIn() {
     },
     validate,
   });
-  return (
+  return status === "unauthenticated"  && (
     <Card className="mx-auto max-w-2xl border-0 mt-10">
       <CardHeader className="mb-10">
         <CardTitle className="text-xl text-center">Welcome Back!</CardTitle>

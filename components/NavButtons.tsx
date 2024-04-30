@@ -2,12 +2,18 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react"
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const NavButtons = () => {
+  const router = useRouter();
   return (
     <div className="grid gap-4 py-4">
-      <Button variant="ghost" className="justify-start">
+      <Button
+        variant="ghost"
+        className="justify-start"
+        onClick={() => router.push("/profile")}
+      >
         Profile
       </Button>
       <Button variant="ghost" className="justify-start">

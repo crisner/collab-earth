@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import * as Yup from "yup";
 
 const ProfileForm = () => {
@@ -39,9 +40,7 @@ const ProfileForm = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      // Implement your signup logic here, sending data to your backend
-      // This example just redirects after a simulated delay
-      console.log("Submitting signup form:", values);
+      console.log("Submitting profile form:", values);
       try {
         const res = await fetch("api/profile", {
           method: "POST",
@@ -69,8 +68,14 @@ const ProfileForm = () => {
     validate,
   });
   return (
-    <form onSubmit={formik.handleSubmit} className="col-start-2 col-end-6 grid gap-x-2 gap-y-6">
-        <TextMuted className="col-start-0">First name</TextMuted>
+    <form
+      onSubmit={formik.handleSubmit}
+      className="col-start-2 col-end-12"
+    >
+      <div className="col-start-2 col-end-12 grid gap-x-2 gap-y-6">
+      <TextMuted className="w-32 col-start-1 flex items-center">
+        First name
+      </TextMuted>
       <div className="col-start-2 col-end-12">
         <Input
           type="text"
@@ -78,9 +83,12 @@ const ProfileForm = () => {
           name="first_name"
           value={formik.values.first_name}
           onChange={formik.handleChange}
-          />
-          </div>
-        <TextMuted className="col-start-0">Last name</TextMuted>
+          className="w-1/2"
+        />
+      </div>
+      <TextMuted className="w-32 col-start-1 flex items-center">
+        Last name
+      </TextMuted>
       <div className="col-start-2 col-end-12">
         <Input
           type="text"
@@ -88,10 +96,11 @@ const ProfileForm = () => {
           name="last_name"
           value={formik.values.last_name}
           onChange={formik.handleChange}
+          className="w-1/2"
         />
       </div>
-        <TextMuted className="col-start-0">Role</TextMuted>
-        <div className="col-start-2 col-end-12">
+      <TextMuted className="w-32 col-start-1 flex items-center">Role</TextMuted>
+      <div className="col-start-2 col-end-12">
         <Select
           name="selectedRole"
           defaultValue={formik.values.selectedRole}
@@ -109,8 +118,8 @@ const ProfileForm = () => {
           <SelectTrigger
             className={
               formik.touched.selectedRole && formik.errors.selectedRole
-                ? "border-destructive"
-                : ""
+                ? "border-destructive w-1/2"
+                : "w-1/2"
             }
           >
             <SelectValue placeholder="Select Role" />
@@ -124,16 +133,41 @@ const ProfileForm = () => {
           </SelectContent>
         </Select>
       </div>
-      <TextMuted className="col-start-0"><Label htmlFor="location">Location (Country)</Label></TextMuted>
+      <TextMuted className="w-32 col-start-1 flex items-center">
+        <Label htmlFor="location">Location (Country)</Label>
+      </TextMuted>
       <div className="col-start-2 col-end-12">
-      <Input
-        type="text"
-        id="location"
-        name="location"
-        value={formik.values.location}
-        onChange={formik.handleChange}
-      />
+        <Input
+          type="text"
+          id="location"
+          name="location"
+          value={formik.values.location}
+          onChange={formik.handleChange}
+          className="w-1/2"
+        />
       </div>
+      </div>
+      {(formik.touched.first_name ||
+        formik.touched.last_name ||
+        formik.touched.selectedRole ||
+        formik.touched.location) && (
+          <div className="gap-2 flex mt-8">
+        <Button
+          disabled={formik.isSubmitting}
+          className="w-24"
+          variant="outline"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          disabled={formik.isSubmitting}
+          className="w-24"
+        >
+          Update
+        </Button>
+        </div>
+      )}
     </form>
   );
 };

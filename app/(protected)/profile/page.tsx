@@ -21,13 +21,11 @@ export default async function Profile() {
         <TextMuted>0 Notes Owned</TextMuted>
         <TextMuted>0 Collaborated</TextMuted>
         </div>
-        <div className="col-start-2 col-end-12 mt-5 flex items-baseline">
-        <TextMuted className='w-32'>Username</TextMuted>
-        <TextLarge>{session?.user?.username}</TextLarge>
-        </div>
-        <div className="col-start-2 col-end-12 flex items-baseline">
-        <TextMuted className='w-32'>Email</TextMuted>
-        <TextLarge>{session?.user?.email}</TextLarge>
+        <div className="col-start-2 col-end-12 mt-16 grid gap-x-2 gap-y-6">
+        <TextMuted className='w-32 col-start-1 flex items-center'>Username</TextMuted>
+        <TextLarge className="col-start-2 col-end-12 flex items-center">{session?.user?.username}</TextLarge>
+        <TextMuted className='w-32 col-start-1 flex items-center'>Email</TextMuted>
+        <TextLarge className="col-start-2 col-end-12 flex items-center">{session?.user?.email}</TextLarge>
         </div>
         <ProfileForm />
         </Grid>

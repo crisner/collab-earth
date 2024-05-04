@@ -12,6 +12,13 @@ const NavButtons = () => {
       <Button
         variant="ghost"
         className="justify-start"
+        onClick={() => router.push("/dashboard")}
+      >
+        Dasboard
+      </Button>
+      <Button
+        variant="ghost"
+        className="justify-start"
         onClick={() => router.push("/profile")}
       >
         Profile

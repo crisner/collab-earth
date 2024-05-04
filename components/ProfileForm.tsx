@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { TextMuted } from "./ui/Typography/TextMuted";
 import { useFormik } from "formik";
 import { ROLES } from "@/constants/users";
@@ -15,10 +15,10 @@ import {
 import { Button } from "@/components/ui/button";
 import * as Yup from "yup";
 import { useSession } from "next-auth/react";
+import action from "@/actions/actions";
 
 const ProfileForm = ({data}: any) => {
   const { data: session } = useSession();
-  
 
   const validationSchema = Yup.object().shape({
     first_name: Yup.string(),
@@ -63,13 +63,20 @@ const ProfileForm = ({data}: any) => {
           const error = res;
           console.error("Error updating profile!", error);
         }
-        
+        action(`profile`);
       } catch (error) {
         console.error("Something went wrong!", error);
       }
     },
     validate,
   });
+
+  useMemo(() => {
+    formik.setFieldValue('first_name', data?.first_name);
+    formik.setFieldValue('last_name', data?.last_name);
+    formik.setFieldValue('selectedRole', data?.selectedRole.length > 0 ? data?.selectedRole[0] : '');
+  }, [data]);
+
   return (
     <form onSubmit={formik.handleSubmit} className="col-start-2 col-end-12">
       <div className="col-start-2 col-end-12 grid gap-x-2 gap-y-6">

@@ -13,7 +13,6 @@ export const POST = async (request: any) => {
     if (!profile) {
       return NextResponse.json({errorMessage: "Profile failed to update"}, { status: 400 });
     }
-    revalidateTag('profile');
     return NextResponse.json({profile}, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(error, { status: 500 });

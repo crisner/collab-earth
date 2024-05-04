@@ -9,11 +9,10 @@ import { getServerSession } from "next-auth/next";
 async function getProfile(id: string) {
   try {
     const res = await fetch(`${process.env.DOMAIN}api/profile?id=${id}`, {
-      next: { tags: ["profile"], revalidate: 3 },
+      next: { tags: [`profile`], revalidate: 3600 },
     });
     if (res.ok) {
       const response = await res.json();
-      console.log("PROFILE", response);
       return response;
     } else {
       const error = res;

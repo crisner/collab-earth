@@ -5,7 +5,6 @@ import { TextMuted } from "./ui/Typography/TextMuted";
 import { useFormik } from "formik";
 import { ROLES } from "@/constants/users";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -17,8 +16,9 @@ import { Button } from "@/components/ui/button";
 import * as Yup from "yup";
 import { useSession } from "next-auth/react";
 
-const ProfileForm = () => {
+const ProfileForm = ({data}: any) => {
   const { data: session } = useSession();
+  
 
   const validationSchema = Yup.object().shape({
     first_name: Yup.string(),
@@ -36,10 +36,9 @@ const ProfileForm = () => {
   };
   const formik = useFormik({
     initialValues: {
-      first_name: "",
-      last_name: "",
-      selectedRole: "",
-      location: "",
+      first_name: data?.first_name ?? "",
+      last_name: data?.last_name ?? "",
+      selectedRole: data?.selectedRole.length > 0 ? data?.selectedRole[0] : '',
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -64,6 +63,7 @@ const ProfileForm = () => {
           const error = res;
           console.error("Error updating profile!", error);
         }
+        
       } catch (error) {
         console.error("Something went wrong!", error);
       }
@@ -111,6 +111,7 @@ const ProfileForm = () => {
             value={formik.values.selectedRole}
             onValueChange={(value) => {
               formik.setFieldValue("selectedRole", value);
+              console.log('value', value);
             }}
             onOpenChange={(value) => {
               if (!value) {
@@ -137,25 +138,10 @@ const ProfileForm = () => {
             </SelectContent>
           </Select>
         </div>
-        <TextMuted className="w-32 col-start-1 flex items-center">
-          <Label htmlFor="location">Location (Country)</Label>
-        </TextMuted>
-        <div className="col-start-2 col-end-12">
-          <Input
-            type="text"
-            id="location"
-            name="location"
-            value={formik.values.location}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            className="w-1/2"
-          />
-        </div>
       </div>
       {(formik.touched.first_name ||
         formik.touched.last_name ||
-        formik.touched.selectedRole ||
-        formik.touched.location) && (
+        formik.touched.selectedRole) && (
         <div className="gap-2 flex mt-8">
           <Button
             disabled={formik.isSubmitting}

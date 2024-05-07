@@ -23,7 +23,7 @@ const NavButtons = () => {
       >
         Profile
       </Button>
-      <Button variant="ghost" className="justify-start">
+      <Button variant="ghost" className="justify-start" onClick={() => router.push("/notes")}>
         Notes
       </Button>
       <Button

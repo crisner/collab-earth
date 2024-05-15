@@ -4,7 +4,7 @@ const noteSchema = new Schema({
     data_point_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'DataPoint',
-        required: true,
+        required: false,
       },
       user_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,11 +24,17 @@ const noteSchema = new Schema({
       },
       visibility: {
         type: String,
-        enum: ['public', 'researchers', 'admins'],  // Visibility options
+        enum: ["visitor", "user", "admin"],  // Visibility options
         required: true,
       },
-    
+      allow_collaboration: {
+        type: Boolean,
+        default: false, 
+      },
+      collaborators: {
+        type: [String],
+      },
 });
 
-const Note = mongoose.model.Note || mongoose.model("Note", noteSchema);
+const Note = mongoose.models.Note || mongoose.model("Note", noteSchema);
 export default Note;

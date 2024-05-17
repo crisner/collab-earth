@@ -45,6 +45,7 @@ export const options: NextAuthOptions = {
           ...profile,
           id: profile.sub,
           name: profile.name,
+          username: profile.email?.split("@")[0],
         };
       },
       clientId: process.env.GOOGLE_ID as string,
@@ -58,19 +59,51 @@ export const options: NextAuthOptions = {
     // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.role = user.role;
         token.username = user.username;
-        token.id = user.id
+        token.id = user.id;
       }
+      if (account?.provider === "google") {
+        await connectMongoDB();
+        try {
+          const existingUser = await User.findOne({ email: user.email });
+          if (existingUser) {
+            token.id = existingUser._id;
+          }
+          // if (!existingUser) {
+          //   const saltRounds = 10;
+          //   const defaultHashedPassword = await bcrypt.hash(
+          //     "collab_earth_goole",
+          //     saltRounds
+          //   );
+          //   const newUser = new User({
+          //     username: user.email?.split("@")[0],
+          //     email: user.email,
+          //     first_name: user?.given_name,
+          //     last_name: user?.family_name,
+          //     role: "user",
+          //     is_verified: user?.email_verified,
+          //     password: defaultHashedPassword,
+          //   });
+
+          //   await newUser.save();
+          //   return true;
+          // }
+          // return true;
+        } catch (err) {
+          console.log("No existing user", err);
+        }
+      }
+      
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.role = token.role;
         session.user.username = token.username;
-        session.user.id = token.id
+        session.user.id = token.id;
       }
       return session;
     },
@@ -81,7 +114,10 @@ export const options: NextAuthOptions = {
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
             const saltRounds = 10;
-    const defaultHashedPassword = await bcrypt.hash('collab_earth_goole', saltRounds);
+            const defaultHashedPassword = await bcrypt.hash(
+              "collab_earth_goole",
+              saltRounds
+            );
             const newUser = new User({
               username: user.email?.split("@")[0],
               email: user.email,
@@ -89,7 +125,7 @@ export const options: NextAuthOptions = {
               last_name: user?.family_name,
               role: "user",
               is_verified: user?.email_verified,
-              password: defaultHashedPassword
+              password: defaultHashedPassword,
             });
 
             await newUser.save();
@@ -101,7 +137,7 @@ export const options: NextAuthOptions = {
           return false;
         }
       }
-      if(account?.provider === 'credentials') {
+      if (account?.provider === "credentials") {
         return true;
       }
       return false;

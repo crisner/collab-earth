@@ -1,10 +1,16 @@
 import User from "@/models/user";
 import connectMongoDB from "@/lib/mongodb";
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { getServerSession } from 'next-auth/next'
+import { options } from "../auth/[...nextauth]/options";
 
-export const POST = async (request: any) => {
+export const POST = async (request: Request) => {
   try {
+    const session = await getServerSession(options);
+    if(!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized!' }, { status: 401 });
+    }
+
     const { id, ...payload } = await request.json();
     await connectMongoDB();
 
@@ -23,6 +29,10 @@ export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
   try {
+    const session = await getServerSession(options);
+    if(!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized!' }, { status: 401 });
+    }
     await connectMongoDB();
 
     const user = await User.findById(id, ['-password', '-_id', '-__v']);

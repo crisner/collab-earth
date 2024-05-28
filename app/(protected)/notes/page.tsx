@@ -14,7 +14,7 @@ export default async function Notes() {
           <TitleLevel1>Notes</TitleLevel1>
         </div>
         <div className="col-end-12 mt-10 flex justify-end items-end gap-6">
-          <ButtonLink className="rounded-full" size="icon" link="/create-note">
+          <ButtonLink className="rounded-full" size="icon" link="/notes/create-note">
             <PlusIcon className="h-4 w-4" />
           </ButtonLink>
         </div>

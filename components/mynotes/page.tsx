@@ -20,7 +20,7 @@ export default async function MyNotes() {
         </div> */}
       <div className="col-start-2 col-end-12  gap-x-2 gap-y-6">
         <Card className="col-span-6">
-          <CardHeader>
+          {/* <CardHeader>
             <CardTitle>My Note Title</CardTitle>
             <CardDescription className="flex gap-4">
               <TextMuted>No Sightings</TextMuted>
@@ -34,7 +34,7 @@ export default async function MyNotes() {
             <TextMuted>Created on: 24/05/24</TextMuted>
 
             <TextMuted>3 Comments</TextMuted>
-          </CardFooter>
+          </CardFooter> */}
         </Card>
       </div>
     </>

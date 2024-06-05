@@ -18,10 +18,10 @@ import styles from "./Nav.module.css";
 const Nav = async () => {
   const session = await getServerSession(options);
   return (
-    <div className="py-4 ml-4 ">
+    // <div className="py-4 ml-4 ">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded-full">
+          <Button variant="outline" size="icon" className="rounded-full bg-white my-4 ml-4">
             <AlignLeft />
           </Button>
         </SheetTrigger>
@@ -42,7 +42,7 @@ const Nav = async () => {
           </SheetClose>
         </SheetContent>
       </Sheet>
-    </div>
+    // </div>
   );
 };
 

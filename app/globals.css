@@ -76,12 +76,14 @@
 }
 
 .main {
-  min-height: calc(100dvh - 72px);
+  min-height: 100dvh;
+  /* min-height: calc(100dvh - 72px); */
 }
 
 .mapContainer {
   width: 100%;
-  height: calc(100dvh - 56px);
+  /* height: calc(100dvh - 56px); */
+  height: 100dvh;
   z-index: 40;
 }
 

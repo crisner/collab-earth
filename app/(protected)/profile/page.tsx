@@ -27,8 +27,7 @@ export default async function Profile() {
   const session = await getServerSession(options);
   const profile = await getProfile(session?.user?.id);
   return (
-    <main className="main">
-      <Grid>
+      <>
         <div className="col-start-2 mt-10 flex items-end gap-6">
           <TitleLevel1>Profile</TitleLevel1>
           {session?.user?.role && <TextMuted>{session?.user?.role}</TextMuted>}
@@ -53,7 +52,6 @@ export default async function Profile() {
           </TextLarge>
         </div>
         <ProfileForm data={profile} />
-      </Grid>
-    </main>
+      </>
   );
 }

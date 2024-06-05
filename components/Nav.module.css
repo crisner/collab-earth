@@ -1,16 +1,25 @@
 .nav {
-    max-width: 250px;
-    padding-left: 6px;
-    padding-right: 6px;
+  max-width: 240px;
+  width: 240px;
+  padding-left: 6px;
+  padding-right: 6px;
+  z-index: 9999;
+}
+
+.nav_hamburger__button {
+  z-index: 9999;
 }
 
 .header {
-    padding-left: 14px;
+  padding-left: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
 }
 
 .collapse {
-    position: absolute;
-    z-index: 99999999999;
-    left: 200px;
-    top: 18px;
+  z-index: 99999999999;
+  left: 200px;
+  top: 18px;
 }

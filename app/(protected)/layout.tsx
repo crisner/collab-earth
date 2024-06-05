@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
 import Nav from "@/components/Nav";
+import Grid from "@/components/ui/Grid/Grid";
 
 export default function ProtectedLayout({
   children, // will be a page or nested layout
@@ -7,11 +7,11 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
-      <Header fixed logo={false}>
+    <main className="main">
+      <Grid className="flex">
         <Nav />
-      </Header>
-      {children}
-    </section>
+        {children}
+      </Grid>
+    </main>
   );
 }

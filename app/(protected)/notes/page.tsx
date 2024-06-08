@@ -6,7 +6,7 @@ import NotesContainer from "@/components/Notes";
 
 export default function Notes({ type = "mynotes" }: { type?: string }) {
   return (
-    <>
+    <Grid>
       <div className="col-start-2 mt-10 flex items-end gap-6">
         <TitleLevel1>Notes</TitleLevel1>
       </div>
@@ -22,6 +22,6 @@ export default function Notes({ type = "mynotes" }: { type?: string }) {
       <div className="col-start-2 col-end-12 grid gap-x-2 gap-y-6">
         {<NotesContainer type={type} />}
       </div>
-    </>
+    </Grid>
   );
 }

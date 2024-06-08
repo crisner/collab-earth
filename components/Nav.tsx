@@ -13,7 +13,7 @@ const Nav = () => {
   const { data: session } = useSession();
   const [showNav, setShowNav] = useState(false);
   return (
-    <>
+    <nav>
       <Button
         variant="outline"
         size="icon"
@@ -25,7 +25,7 @@ const Nav = () => {
       <section
         className={`nav ${showNav ? "nav-open block" : "hidden"} ${
           styles.nav
-        } bg-background shadow-lg absolute h-full`}
+        } bg-background shadow-lg  h-full`}
       >
         <header className={styles.header}>
           <div>
@@ -42,7 +42,7 @@ const Nav = () => {
         </header>
         <NavButtons />
       </section>
-    </>
+    </nav>
   );
 };
 

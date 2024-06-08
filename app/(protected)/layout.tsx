@@ -7,11 +7,15 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="main">
-      <Grid className="flex">
+    <main className="main flex">
+      {/* <Grid className="flex"> */}
+        {/* <div className="col-start-auto col-end-auto"> */}
         <Nav />
+        {/* </div> */}
+        <div className="w-full">
         {children}
-      </Grid>
+        </div>
+      {/* </Grid> */}
     </main>
   );
 }

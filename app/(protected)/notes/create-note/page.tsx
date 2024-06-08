@@ -14,8 +14,9 @@ import Link from "next/link";
 
 export default async function CreateNote() {
   return (
-    <div className="col-start-3 col-end-12">
-        <div className="my-4 z-[600]">
+    <Grid>
+    <div className="col-start-1 col-end-13">
+        <div className="mx-4 my-4 z-[600]">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -42,5 +43,6 @@ export default async function CreateNote() {
         </div>
         </div>
       </div>
+      </Grid>
   );
 }

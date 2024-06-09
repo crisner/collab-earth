@@ -3,7 +3,6 @@
   width: 220px;
   padding-left: 6px;
   padding-right: 6px;
-  z-index: 9999;
 }
 
 .nav_hamburger__button {
@@ -15,7 +14,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 6px;
 }
 
 .collapse {

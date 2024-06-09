@@ -102,3 +102,7 @@
   height: calc(100dvh - 224px);
   overflow: auto;
 }
+
+.main:has(.nav-toggle--off) .notes-header {
+ margin-left: 64px;
+}

@@ -17,7 +17,7 @@ const Nav = () => {
       <Button
         variant="outline"
         size="icon"
-        className={`rounded-full ${styles.nav_hamburger__button} bg-white my-2 ml-2 ${showNav ? "hidden" : "inline-flex"}`}
+        className={`absolute ${styles.nav_hamburger__button}  bg-white my-2 ml-2 nav-toggle${showNav ? "--on hidden" : "--off inline-flex"}`}
         onClick={() => setShowNav(!showNav)}
       >
         <AlignLeft />
@@ -35,7 +35,7 @@ const Nav = () => {
             )}
           </div>
           <div className={styles.collapse}>
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={() => setShowNav(!showNav)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 my-2" onClick={() => setShowNav(!showNav)}>
               <ChevronsLeft />
             </Button>
           </div>
